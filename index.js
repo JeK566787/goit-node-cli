@@ -1,4 +1,7 @@
-import { program } from "commander";
+import { program } from 'commander';
+
+import contacts from "./contacts.cjs";
+
 program
     .option("-a, --action <type>", "choose action")
     .option("-i, --id <type>", "user id")
@@ -14,19 +17,28 @@ const options = program.opts();
 async function invokeAction({ action, id, name, email, phone }) {
     switch (action) {
         case "list":
-            // ...
+            const allContacts = await contacts.getAll();
+            return console.log(allContacts);
             break;
 
         case "get":
-            // ... id
+            const oneBook = await contacts.getById(id);
+            return console.log(oneBook);
             break;
 
         case "add":
-            // ... name email phone
+            const newBook = await contacts.add({ name, email, phone });
+            return console.log(newBook);
+            break;
+
+        case "update":
+            const updateContact = await contacts.updateById(id, { name, email, phone });
+            return console.log(updateContact);
             break;
 
         case "remove":
-            // ... id
+            const deleteContact = await contacts.deleteById(id);
+            return console.log(deleteContact);
             break;
 
         default:
